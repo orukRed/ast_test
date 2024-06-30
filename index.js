@@ -28,23 +28,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const babel = __importStar(require("@babel/parser"));
 const traverse_1 = __importDefault(require("@babel/traverse"));
-function getObjectProperties(node, parentKey = '') {
-    if (node.type === 'ObjectExpression') {
-        const properties = {};
-        node.properties.forEach((prop) => {
-            const keyName = parentKey + prop.key.name; // 親のキー名を含める
-            if (prop.value.type === 'ObjectExpression') {
-                properties[keyName] = getObjectProperties(prop.value, keyName + '.'); // 再帰的に呼び出す際にキー名を渡す
-            }
-            else {
-                properties[keyName] = prop.value.value; // リテラル値の取得
-            }
-        });
-        return properties;
-    }
-}
+const objects = [];
 const ast = babel.parse(`
-  f.tmp_index = 0;
+  f.tmp_index = "message";
   f.cg_index = 12;
   f.top = 100;
   f.left = 60;
@@ -52,30 +38,37 @@ const ast = babel.parse(`
     foo:{
         bar:1
     }
-  };
-
-  
-  `, {
+  };  
+`, {
     allowAwaitOutsideFunction: true,
     allowUndeclaredExports: true,
     errorRecovery: true,
     allowSuperOutsideMethod: true,
 });
-const objects = [];
+const variablePrefixList = ["f", "sf", "tf", "mp"];
 (0, traverse_1.default)(ast, {
     enter: (path) => {
-        if (path.isAssignmentExpression()) {
-            const left = path.node.left;
-            if (left.type === 'MemberExpression' && left.object.type === 'Identifier' && left.object.name === 'f') {
-                if (left.property.type === 'Identifier') {
-                    const object = {};
-                    // 'f.' をキー名の先頭に追加
-                    object['f.' + left.property.name] = getObjectProperties(path.node.right);
-                    objects.push(object);
-                }
+    },
+    Identifier(path) {
+        // console.log('Identifier', path.node.name);
+    },
+    MemberExpression(path) {
+        const left = path.node;
+        if (left.object.type === 'Identifier' && variablePrefixList.includes(left.object.name)) {
+            if (left.property.type === 'Identifier') {
+                // 'f.' をキー名の先頭に追加してプロパティ名を取得
+                const propertyName = 'f.' + left.property.name;
+                console.log("MemberExpression", propertyName); // ここで取得したプロパティ名を使用
+                objects.push(propertyName);
             }
         }
-    },
+    }
 });
-console.log("objectsを出力するよ");
+// console.log("astを出力するよ")
+// console.log(JSON.stringify(ast, null, 2));
+// console.log("objectsを出力するよ")
+// console.log(JSON.stringify(objects, null, 2))
 console.log(objects);
+console.log("終了するよ");
+process.exit();
+//# sourceMappingURL=index.js.map
