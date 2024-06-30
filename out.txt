@@ -1,0 +1,26 @@
+Node {
+  type: 'Identifier',
+  start: 94,
+  end: 97,
+  loc: SourceLocation {
+    start: Position { line: 7, column: 4, index: 94 },
+    end: Position { line: 7, column: 7, index: 97 },
+    filename: undefined,
+    identifierName: 'foo'
+  },
+  name: 'foo'
+}
+Node {
+  type: 'Identifier',
+  start: 108,
+  end: 111,
+  loc: SourceLocation {
+    start: Position { line: 8, column: 8, index: 108 },
+    end: Position { line: 8, column: 11, index: 111 },
+    filename: undefined,
+    identifierName: 'bar'
+  },
+  name: 'bar'
+}
+[ 'f.tmp_index', 'f.cg_index', 'f.top', 'f.left', 'f.hoge' ]
+終了するよ

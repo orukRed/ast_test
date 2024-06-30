@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "ast": "tsc && node ./index.js"
+    "ast": "tsc && node ./index.js",
+    "ast_f": "tsc && node ./index.js>>out.txt"
   },
   "author": "",
   "license": "ISC",
