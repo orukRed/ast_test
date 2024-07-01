@@ -24,3 +24,7 @@ Node {
 }
 [ 'f.tmp_index', 'f.cg_index', 'f.top', 'f.left', 'f.hoge' ]
 終了するよ
+[]
+[]
+[ [], [] ]
+終了するよ
